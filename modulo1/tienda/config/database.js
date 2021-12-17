@@ -5,8 +5,8 @@ const Review = require('./../models/Review');
 const Order = require('./../models/Order');
 const User = require('./../models/User');
 
-const sequelize = new Sequelize('ecommerce-api', 'root', 'root', {
-    host: 'localhost',
+const sequelize = new Sequelize('tienda_linea', 'hugo', '12qwaszx', {
+    host: 'db',
     dialect: 'mariadb',
     logging: false,
 });
