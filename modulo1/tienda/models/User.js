@@ -1,26 +1,30 @@
-const { DataTypes }  = require('sequelize');
+const { DataTypes } = require('sequelize');
 const bcrypt = require('bcrypt');
 
-const user = (sequelize) => sequelize.define('user', {
-    id:  { type: DataTypes.INTEGER, primaryKey: true , autoIncrement: true },
-    name: { type: DataTypes.STRING },
-    lastname: { type: DataTypes.STRING },
-    type: { type: DataTypes.STRING },
-    email: { type: DataTypes.STRING },
-    password: { type: DataTypes.STRING },
-    createdAt: { type: DataTypes.DATE },
-    updatedAt: { type: DataTypes.DATE }
-}, {
-    hooks: {
-        beforeCreate: (user) => {
+module.exports = (sequelize) => {
+
+ const User  = sequelize.define('users', {
+        id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+        name: DataTypes.STRING,
+        lastname: DataTypes.STRING,
+        type: DataTypes.STRING,
+        email: DataTypes.STRING,
+        password: DataTypes.STRING,
+        createdAt: DataTypes.DATE,
+        updatedAt: DataTypes.DATE,
+      }, {
+        hooks: {
+          beforeCreate: (user) => {
             const salt = bcrypt.genSaltSync();
             user.password = bcrypt.hashSync(user.password, salt);
-        }
-    }
-});
+          },
+        },
+      });
 
-user.prototype.validPassword = (password) => {
-    return bcrypt.compareSync(password, this.password);
+  User.prototype.validPassword = function(password){
+    return bcrypt.compareSync(password,this.password)
+  }
+  
+  return User;
+
 }
-
-module.exports = user;
