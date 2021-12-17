@@ -6,7 +6,7 @@ const Order = require('./../models/Order');
 const User = require('./../models/User');
 
 const sequelize = new Sequelize('tienda_linea', 'hugo', '12qwaszx', {
-    host: 'db',
+    host: '127.0.0.1',
     dialect: 'mariadb',
     logging: false,
 });

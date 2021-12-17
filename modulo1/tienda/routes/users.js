@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
     try{
         const user = await sequelize.models.users.findOne({ where: { email: body.email } });
         if(user){
-            return res.send(400).json({ data: user, message: 'user prev register' });
+            return res.sendStatus(400).json({ data: user, message: 'user prev register' });
         }
         const newUser = await sequelize.models.users.create({
             name: body.description,
@@ -27,11 +27,11 @@ router.post('/', async (req, res) => {
             password: body.password
         });
         await newUser.save();
-        return res.send(201).json({ data: newUser, message: 'user created successfully' });
+        return res.sendStatus(201).json({ data: newUser, message: 'user created successfully' });
         
     }catch(err){
         console.error(err);
-        return res.send(400).json({ data: {}, message: err.message });
+        return res.sendStatus(400).json({ data: {}, message: err.message });
     }
 });
 
