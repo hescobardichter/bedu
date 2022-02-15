@@ -9,6 +9,7 @@ import Footer from './components/Footer';
 import Home from './components/Home';
 import About from './components/About';
 import Contact from './components/Contact';
+import ViewProduct from './components/ViewProduct';
 
 const useStyles = makeStyles((theme) => ({
   fluid: {
@@ -30,6 +31,7 @@ function App() {
           <Route exact path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/product/:id" element={<ViewProduct />} />
         </Routes>
       </Container>
       <Footer></Footer>

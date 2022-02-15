@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -6,7 +6,8 @@ import CardActions from '@mui/material/CardActions';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
-import { Link } from "react-router-dom";
+import { getProduct } from '../services/product.service';
+import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
       cardGrid: {
@@ -38,17 +39,14 @@ const useStyles = makeStyles((theme) => ({
       },
       cardContentItem: {
           marginBottom: '20px !important',
-      },
-      cardLink: {
-        color: '#000',
-        textDecoration: 'none',
-      },
+      }
 }));
 
-const Product = (props) => {
+const ViewProduct = () => {
 
-    const { id, title, description, image } = props; 
+    const { id } = useParams();
     const [ count, setCount ] = useState(0);
+    const [ product, setProduct ] = useState({});
     const classes = useStyles();
 
     const changeCounter = (value) => {
@@ -59,8 +57,19 @@ const Product = (props) => {
       }
     }
 
+    useEffect(() => {
+
+        getProduct(id).then((res) => {
+            setProduct(res);
+        }, []);
+
+    });
+
+    const { title, image, description } = product;
+
     return(
-        
+      <>
+         { product.title ? 
             <Card className={classes.card}>
               <CardMedia
                     className={classes.cardMedia}
@@ -79,14 +88,14 @@ const Product = (props) => {
                       <Button onClick={() => { changeCounter(1) }}>+</Button>
                       <div>{count}</div>
                       <Button  onClick={() => { changeCounter(-1) }}>-</Button>
-                      <Button variant="outlined" className={classes.cardButtonBorder}>
-                        <Link className={classes.cardLink} to={'/product/'+id}>
-                          VER
-                        </Link>
-                      </Button>
                   </CardActions>
             </Card>
+            : 
+              <p>Cargando producto.</p>
+            }
+      </>
+            
     );
 }
 
-export default Product;
+export default ViewProduct;
