@@ -1,9 +1,10 @@
+import { useState } from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { makeStyles } from '@mui/styles';
 
 const useStyles = makeStyles((theme) => ({
@@ -20,8 +21,19 @@ const useStyles = makeStyles((theme) => ({
       cardMedia: {
         paddingTop: '56.25%', // 16:9
       },
-      cardContent: {
+      cardTitle: {
+        fontSize: '22px !important', 
+        overflow: 'hidden',
+        height: '58px',
+
+      },
+      cardContentGeneral: {
         flexGrow: 1,
+      },
+      cardContent: {
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+        height: '100px',
       },
       cardContentItem: {
           marginBottom: '20px !important',
@@ -31,8 +43,16 @@ const useStyles = makeStyles((theme) => ({
 const Product = (props) => {
 
     const { title, description, image } = props; 
-
+    const [ count, setCount ] = useState(0);
     const classes = useStyles();
+
+    const changeCounter = (value) => {
+      const counter = count + value;
+      setCount(counter)
+      if(count <= 0 && value <= 0){
+        setCount(0)
+      }
+    }
 
     return(
         
@@ -42,14 +62,19 @@ const Product = (props) => {
                     image={image} 
                     title={title}
                  />
-                  <CardContent className={classes.cardContent}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                  <CardContent className={classes.cardContentGeneral}>
+                    <Typography  className={classes.cardTitle} gutterBottom variant="h5" component="h2">
                       {title}
                     </Typography>
-                    <Typography>
+                    <Typography className={classes.cardContent}>
                       {description}
                     </Typography>
                   </CardContent>
+                  <CardActions> 
+                      <Button onClick={() => { changeCounter(1) }}>+</Button>
+                      <div>{count}</div>
+                      <Button  onClick={() => { changeCounter(-1) }}>-</Button>
+                  </CardActions>
             </Card>
     );
 }
